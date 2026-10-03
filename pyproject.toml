@@ -47,8 +47,8 @@ dev = [
 where = ["src"]
 
 [tool.pytest.ini_options]
+pythonpath = ["src"]
 testpaths = ["tests"]
-# addopts = "--cov=unitconverter --cov-report=term-missing --cov-fail-under=90"
 
 [tool.ruff]
 line-length = 88
