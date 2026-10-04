@@ -200,7 +200,10 @@ def test_base_unit_with_wrong_factor_is_rejected() -> None:
     category = make_category(make_unit(factor=2))
     with pytest.raises(
         RegistryError,
-        match="^RegistryError: base unit 'a' of category 'x' must have factor 1 and offset 0.$",
+        match=(
+            r"^RegistryError: base unit 'a' of category 'x' "
+            r"must have factor 1 and offset 0\.$"
+        ),
     ):
         Registry([category])
 
@@ -209,7 +212,10 @@ def test_base_unit_with_an_offset_is_rejected() -> None:
     category = make_category(make_unit(offset=1.0))
     with pytest.raises(
         RegistryError,
-        match="^RegistryError: base unit 'a' of category 'x' must have factor 1 and offset 0.$",
+        match=(
+            r"^RegistryError: base unit 'a' of category 'x' "
+            r"must have factor 1 and offset 0\.$"
+        ),
     ):
         Registry([category])
 
@@ -221,7 +227,10 @@ def test_duplicate_unit_id_in_one_category_is_rejected() -> None:
     category = make_category(make_unit(), make_unit(name="b", symbol="b"))
     with pytest.raises(
         RegistryError,
-        match="^RegistryError: duplicate unit id 'a' found in category 'x'.$",
+        match=(
+            r"^RegistryError: duplicate unit id 'a' "
+            r"found in category 'x'\.$"
+        ),
     ):
         Registry([category])
 
@@ -231,7 +240,10 @@ def test_duplicate_unit_id_across_categories_is_rejected() -> None:
     second = make_category(make_unit(name="b", symbol="b"), name="second")
     with pytest.raises(
         RegistryError,
-        match="^RegistryError: duplicate unit id 'a' found in categories ('first' and 'second'|'second' and 'first').$",
+        match=(
+            r"^RegistryError: duplicate unit id 'a' "
+            r"found in categories ('first' and 'second'|'second' and 'first')\.$"
+        ),
     ):
         Registry([first, second])
 
@@ -245,7 +257,10 @@ def test_invalid_factor_is_rejected(factor: float) -> None:
     )
     with pytest.raises(
         RegistryError,
-        match=f"^RegistryError: unit 'b' has an invalid factor '{factor}': it must be positive and finite.$",
+        match=(
+            f"^RegistryError: unit 'b' has an invalid factor '{factor}': "
+            f"it must be positive and finite.$"
+        ),
     ):
         Registry([category])
 
@@ -257,7 +272,10 @@ def test_invalid_offset_is_rejected(offset: float) -> None:
     )
     with pytest.raises(
         RegistryError,
-        match=f"^RegistryError: unit 'b' has an invalid offset '{offset}': it must be finite.$",
+        match=(
+            f"^RegistryError: unit 'b' has an invalid offset '{offset}': "
+            f"it must be finite.$"
+        ),
     ):
         Registry([category])
 
@@ -269,7 +287,7 @@ def test_empty_name_is_rejected() -> None:
     category = make_category(make_unit(name=" "))
     with pytest.raises(
         RegistryError,
-        match=f"^RegistryError: unit 'a' has an empty name.$",
+        match="^RegistryError: unit 'a' has an empty name.$",
     ):
         Registry([category])
 
@@ -278,7 +296,7 @@ def test_empty_symbol_is_rejected() -> None:
     category = make_category(make_unit(symbol=""))
     with pytest.raises(
         RegistryError,
-        match=f"^RegistryError: unit 'a' has an empty symbol.$",
+        match="^RegistryError: unit 'a' has an empty symbol.$",
     ):
         Registry([category])
 
@@ -287,7 +305,7 @@ def test_empty_alias_is_rejected() -> None:
     category = make_category(make_unit(aliases=("ok", "  ")))
     with pytest.raises(
         RegistryError,
-        match=f"^RegistryError: unit 'a' has an empty alias.$",
+        match="^RegistryError: unit 'a' has an empty alias.$",
     ):
         Registry([category])
 
@@ -296,7 +314,10 @@ def test_alias_shared_by_two_units_in_one_category_is_rejected() -> None:
     second = make_unit(id="b", name="b", symbol="b", aliases=("A",))
     with pytest.raises(
         RegistryError,
-        match="^RegistryError: key 'a' is used by both unit ('a' and unit 'b'|'b' and unit 'a').$",
+        match=(
+            r"^RegistryError: key 'a' is used by "
+            r"both unit ('a' and unit 'b'|'b' and unit 'a')\.$"
+        ),
     ):
         Registry([make_category(make_unit(), second)])
 
@@ -307,7 +328,10 @@ def test_alias_shared_across_categories_is_rejected() -> None:
     second = make_category(other_base, base_id="b", name="second")
     with pytest.raises(
         RegistryError,
-        match="^RegistryError: key 'a' is used by both unit ('a' and unit 'b'|'b' and unit 'a').$",
+        match=(
+            r"^RegistryError: key 'a' is used by "
+            r"both unit ('a' and unit 'b'|'b' and unit 'a')\.$"
+        ),
     ):
         Registry([first, second])
 
@@ -326,6 +350,9 @@ def test_symbols_differing_only_by_case_are_rejected() -> None:
     second = make_unit(id="m2", name="m2", symbol="Mm")
     with pytest.raises(
         RegistryError,
-        match="^RegistryError: key 'mm' is used by both unit ('m1' and unit 'm2'|'m2' and unit 'm1').$",
+        match=(
+            r"^RegistryError: key 'mm' is used by "
+            r"both unit ('m1' and unit 'm2'|'m2' and unit 'm1')\.$"
+        ),
     ):
         Registry([make_category(first, second, base_id="m1")])

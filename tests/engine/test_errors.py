@@ -6,8 +6,8 @@ from unitconverter.engine.errors import (
     ConverterError,
     IncompatibleUnitsError,
     InvalidNumberError,
-    UnknownUnitError,
     RegistryError,
+    UnknownUnitError,
 )
 
 # --- ConverterError -------------------------------------------------------
@@ -100,9 +100,8 @@ def test_unknown_unit_error_with_one_suggestion() -> None:
 
 def test_unknown_unit_error_with_several_suggestions() -> None:
     error = UnknownUnitError("mter", ["meter", "metre", "miter"])
-    assert (
-        error.message
-        == "UnknownUnitError: unknown unit 'mter'. Did you mean 'meter', 'metre', 'miter'?"
+    assert error.message == (
+        "UnknownUnitError: unknown unit 'mter'. Did you mean 'meter', 'metre', 'miter'?"
     )
 
 
