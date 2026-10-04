@@ -112,7 +112,7 @@ def test_categories_with_identical_fields_are_equal() -> None:
     assert first == second
 
 
-def test_category_requires_keyword_arguments() -> None:
+def test_category_requires_arguments() -> None:
     with pytest.raises(TypeError):
         Category("length", "meter")  # type: ignore[call-arg]
 

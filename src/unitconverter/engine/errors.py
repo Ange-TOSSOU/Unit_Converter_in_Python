@@ -84,3 +84,12 @@ class IncompatibleUnitsError(ConverterError):
             message += f": cannot convert from '{from_category}' to '{to_category}'"
 
         super().__init__(message + ".")
+
+
+class RegistryError(Exception):
+    """Raised when unit data is invalid (a developer error, not a user error)."""
+
+    def __init__(self, detail: str) -> None:
+        self.detail = detail
+        self.message = f"RegistryError: {detail}"
+        super().__init__(self.message)

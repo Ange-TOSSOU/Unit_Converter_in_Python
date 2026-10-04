@@ -7,6 +7,7 @@ from unitconverter.engine.errors import (
     IncompatibleUnitsError,
     InvalidNumberError,
     UnknownUnitError,
+    RegistryError,
 )
 
 # --- ConverterError -------------------------------------------------------
@@ -177,3 +178,45 @@ def test_every_error_str_matches_message(error: ConverterError) -> None:
 @pytest.mark.parametrize("error", ALL_ERRORS)
 def test_every_error_message_is_not_empty(error: ConverterError) -> None:
     assert error.message.strip() != ""
+
+
+# --- RegistryError --------------------------------------------------------
+
+
+def test_registry_error_is_an_exception() -> None:
+    assert issubclass(RegistryError, Exception)
+
+
+def test_registry_error_can_be_raised_and_caught() -> None:
+    with pytest.raises(RegistryError):
+        raise RegistryError("Bad data.")
+
+
+def test_registry_error_keeps_detail() -> None:
+    assert RegistryError("Bad data.").detail == "Bad data."
+
+
+def test_registry_error_message() -> None:
+    assert RegistryError("Bad data.").message == "RegistryError: Bad data."
+
+
+def test_registry_error_str_matches_message() -> None:
+    error = RegistryError("Bad data.")
+    assert str(error) == error.message
+
+
+def test_registry_error_is_not_a_converter_error() -> None:
+    # Protects D45: a data bug must not be hidden behind the friendly,
+    # user-facing ConverterError family.
+    assert not issubclass(RegistryError, ConverterError)
+
+
+def test_registry_error_is_not_caught_by_converter_error_handlers() -> None:
+    caught_as_converter_error = False
+    try:
+        raise RegistryError("Bad data.")
+    except ConverterError:
+        caught_as_converter_error = True
+    except RegistryError:
+        pass
+    assert not caught_as_converter_error
