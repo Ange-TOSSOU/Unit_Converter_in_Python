@@ -13,25 +13,25 @@ This document describes how the unit converter is structured and why. Components
 ## Layers
 
 ```
-┌────────────┐   ┌────────────┐
-│ CLI layer  │   │ GUI layer  │          presentation only        (planned)
-└─────┬──────┘   └─────┬──────┘
-      └───────┬────────┘
-        ┌─────▼──────┐
-        │ Public API │   builds the registry from the data,      (planned)
-        └─────┬──────┘   exposes parse and convert
-   ┌──────────┼──────────────┐
-┌──▼───┐  ┌───▼─────┐  ┌─────▼─────┐
-│Resolv│  │Converter│  │ Formatter │       engine                (planned)
-└──┬───┘  └───┬─────┘  └───────────┘
-   └────┬─────┘
-   ┌────▼─────┐   ┌────────┐   ┌────────┐
-   │ Registry │   │ Models │   │ Errors │  engine                (implemented)
-   └────┬─────┘   └────────┘   └────────┘
-        │ uses
-   ┌────▼─────┐          ┌────────────┐
-   │  utils   │          │    data    │    unit definitions      (implemented)
-   └──────────┘          └────────────┘
+┌────────────┐     ┌────────────┐
+│ CLI layer  │     │ GUI layer  │          presentation only        (planned)
+└─────┬──────┘     └─────┬──────┘
+      └─────────┬────────┘
+          ┌─────▼──────┐
+          │ Public API │   builds the registry from the data,      (planned)
+          └─────┬──────┘   exposes parse and convert
+    ┌───────────┼──────────────┐
+┌───▼────┐  ┌───▼─────┐  ┌─────▼─────┐
+│Resolver│  │Converter│  │ Formatter │       engine                (planned)
+└───┬────┘  └───┬─────┘  └───────────┘
+    └────┬──────┘
+    ┌────▼─────┐   ┌────────┐   ┌────────┐
+    │ Registry │   │ Models │   │ Errors │  engine                (implemented)
+    └────┬─────┘   └────────┘   └────────┘
+         │ uses
+    ┌────▼─────┐          ┌────────────┐
+    │  utils   │          │    data    │    unit definitions      (implemented)
+    └──────────┘          └────────────┘
 ```
 
 The `data` package depends only on the engine's models. Nothing in the engine imports from `data`: the registry receives its categories as an argument, and the public API connects the two (D51). The `utils` package depends on nothing in the project.
