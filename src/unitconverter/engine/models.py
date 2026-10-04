@@ -1,14 +1,6 @@
 """Data types describing units, categories and conversion results."""
 
 from dataclasses import dataclass
-from enum import Enum
-
-
-class System(Enum):
-    """Unit system a unit belongs to."""
-
-    METRIC = "metric"
-    IMPERIAL = "imperial"
 
 
 @dataclass
@@ -23,7 +15,6 @@ class Unit:
     name: str
     symbol: str
     factor: float
-    system: System
     aliases: tuple[str, ...] = ()
     offset: float = 0.0
 

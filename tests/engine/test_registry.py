@@ -3,7 +3,7 @@
 import pytest
 
 from unitconverter.engine.errors import RegistryError
-from unitconverter.engine.models import Category, System, Unit
+from unitconverter.engine.models import Category, Unit
 from unitconverter.engine.registry import Registry
 from unitconverter.utils.normalize import normalize
 
@@ -15,11 +15,10 @@ def make_unit(
     name: str = "a",
     symbol: str = "a",
     factor: float = 1,
-    system: System = System.METRIC,
     aliases: tuple[str, ...] = (),
     offset: float = 0.0,
 ) -> Unit:
-    return Unit(id, name, symbol, factor, system, aliases, offset)
+    return Unit(id, name, symbol, factor, aliases, offset)
 
 
 def make_category(*units: Unit, base_id: str = "a", name: str = "x") -> Category:
@@ -31,7 +30,6 @@ METER = Unit(
     name="meter",
     symbol="m",
     factor=1,
-    system=System.METRIC,
     aliases=("metre", "meters", "metres"),
 )
 KILOMETER = Unit(
@@ -39,7 +37,6 @@ KILOMETER = Unit(
     name="kilometer",
     symbol="km",
     factor=1000,
-    system=System.METRIC,
     aliases=("kilometre", "kilometers", "kilometres"),
 )
 
@@ -48,14 +45,12 @@ KELVIN = Unit(
     name="kelvin",
     symbol="K",
     factor=1,
-    system=System.IMPERIAL,
 )
 CELSIUS = Unit(
     id="celsius",
     name="celsius",
     symbol="C",
     factor=1,
-    system=System.IMPERIAL,
     aliases=("degree celsius", "degrees celsius"),
     offset=273.15,
 )

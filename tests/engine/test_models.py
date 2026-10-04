@@ -2,7 +2,7 @@
 
 import pytest
 
-from unitconverter.engine.models import Category, Quantity, System, Unit
+from unitconverter.engine.models import Category, Quantity, Unit
 
 
 def make_meter() -> Unit:
@@ -11,7 +11,6 @@ def make_meter() -> Unit:
         name="meter",
         symbol="m",
         factor=1,
-        system=System.METRIC,
     )
 
 
@@ -21,27 +20,8 @@ def make_kilometer() -> Unit:
         name="kilometer",
         symbol="km",
         factor=1000,
-        system=System.METRIC,
         aliases=("kilometre", "kilometers", "kilometres"),
     )
-
-
-# --- System ---------------------------------------------------------------
-
-
-def test_system_members_have_expected_values() -> None:
-    assert System.METRIC.value == "metric"
-    assert System.IMPERIAL.value == "imperial"
-
-
-def test_system_can_be_looked_up_by_value() -> None:
-    assert System("metric") is System.METRIC
-    assert System("imperial") is System.IMPERIAL
-
-
-def test_system_rejects_an_unknown_value() -> None:
-    with pytest.raises(ValueError):
-        System("metrc")
 
 
 # --- Unit -----------------------------------------------------------------
@@ -53,7 +33,6 @@ def test_unit_holds_the_fields_it_was_given() -> None:
     assert unit.name == "kilometer"
     assert unit.symbol == "km"
     assert unit.factor == 1000
-    assert unit.system is System.METRIC
     assert unit.aliases == ("kilometre", "kilometers", "kilometres")
 
 
@@ -70,7 +49,6 @@ def test_unit_accepts_an_offset() -> None:
         symbol="°C",
         factor=1,
         offset=273.15,
-        system=System.METRIC,
     )
     assert celsius.offset == 273.15
 
