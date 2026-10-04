@@ -356,3 +356,87 @@ def test_symbols_differing_only_by_case_are_rejected() -> None:
         ),
     ):
         Registry([make_category(first, second, base_id="m1")])
+
+
+# --- Unsupported names ----------------------------------------------------
+
+
+UNSUPPORTED = ("gallon", "Pint", "fl oz")
+
+
+def make_registry_with_unsupported() -> Registry:
+    return Registry([LENGTH, TEMPERATURE], unsupported=UNSUPPORTED)
+
+
+def test_no_name_is_unsupported_by_default() -> None:
+    assert not make_registry().is_unsupported("gallon")
+
+
+@pytest.mark.parametrize(
+    "name",
+    ["gallon", "GALLON", "  Gallon  ", "pint", "Pint", "fl oz", "FL   OZ"],
+)
+def test_listed_names_are_unsupported(name: str) -> None:
+    assert make_registry_with_unsupported().is_unsupported(name)
+
+
+@pytest.mark.parametrize("name", ["meter", "km", "Celsius", "blorp", "", "   "])
+def test_other_names_are_not_unsupported(name: str) -> None:
+    assert not make_registry_with_unsupported().is_unsupported(name)
+
+
+def test_unsupported_names_accept_any_iterable() -> None:
+    registry = Registry(
+        [LENGTH, TEMPERATURE], unsupported=(name for name in UNSUPPORTED)
+    )
+    assert registry.is_unsupported("gallon")
+
+
+def test_repeated_unsupported_names_are_ignored() -> None:
+    registry = Registry(
+        [LENGTH, TEMPERATURE], unsupported=["gallon", "Gallon", "  GALLON "]
+    )
+    assert registry.is_unsupported("gallon")
+
+
+@pytest.mark.parametrize("name", ["", "   "])
+def test_empty_unsupported_name_is_rejected(name: str) -> None:
+    with pytest.raises(
+        RegistryError,
+        match=f"^RegistryError: unsupported name '{name}' is empty.$",
+    ):
+        Registry([LENGTH, TEMPERATURE], unsupported=["gallon", name])
+
+
+@pytest.mark.parametrize(
+    ("name", "unit_id"),
+    [
+        ("Kilometer", "kilometer"),
+        ("km", "kilometer"),
+        ("metres", "meter"),
+        ("  CELSIUS ", "celsius"),
+    ],
+)
+def test_unsupported_name_that_is_also_supported_is_rejected(
+    name: str, unit_id: str
+) -> None:
+    with pytest.raises(
+        RegistryError,
+        match=(
+            f"^RegistryError: unsupported name '{name}' is a supported name "
+            f"of unit '{unit_id}'.$"
+        ),
+    ):
+        Registry([LENGTH, TEMPERATURE], unsupported=[name])
+
+
+def test_unsupported_names_are_not_found_as_units() -> None:
+    assert make_registry_with_unsupported().find_unit("gallon") is None
+
+
+def test_unsupported_names_are_not_suggestion_keys() -> None:
+    assert "gallon" not in make_registry_with_unsupported().aliases()
+
+
+def test_unsupported_names_do_not_change_the_aliases() -> None:
+    assert make_registry().aliases() == make_registry_with_unsupported().aliases()

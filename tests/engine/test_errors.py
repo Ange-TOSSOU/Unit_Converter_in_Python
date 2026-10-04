@@ -8,6 +8,7 @@ from unitconverter.engine.errors import (
     InvalidNumberError,
     RegistryError,
     UnknownUnitError,
+    UnsupportedUnitError,
 )
 
 # --- ConverterError -------------------------------------------------------
@@ -219,3 +220,30 @@ def test_registry_error_is_not_caught_by_converter_error_handlers() -> None:
     except RegistryError:
         pass
     assert not caught_as_converter_error
+
+
+# --- UnsupportedUnitError -------------------------------------------------
+
+
+def test_unsupported_unit_error_keeps_name() -> None:
+    assert UnsupportedUnitError("gallon").name == "gallon"
+
+
+def test_unsupported_unit_error_message() -> None:
+    error = UnsupportedUnitError("gallon")
+    assert error.message == ("UnsupportedUnitError: 'gallon' is not supported.")
+
+
+def test_unsupported_unit_error_keeps_the_text_as_typed() -> None:
+    error = UnsupportedUnitError("Gallons")
+    assert error.message == ("UnsupportedUnitError: 'Gallons' is not supported.")
+
+
+def test_unsupported_unit_error_str_matches_message() -> None:
+    error = UnsupportedUnitError("gallon")
+    assert str(error) == error.message
+
+
+def test_unsupported_unit_error_is_caught_as_converter_error() -> None:
+    with pytest.raises(ConverterError):
+        raise UnsupportedUnitError("gallon")

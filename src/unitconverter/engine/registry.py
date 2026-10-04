@@ -17,7 +17,11 @@ class Registry:
     a miss means (unknown, unsupported, suggestions) is the resolver's job.
     """
 
-    def __init__(self, categories: Iterable[Category]) -> None:
+    def __init__(
+        self,
+        categories: Iterable[Category],
+        unsupported: Iterable[str] = (),
+    ) -> None:
         category_list = tuple(categories)
         category_names: set[str] = set()
         units_category_list: dict[str, Category] = {}
@@ -64,6 +68,7 @@ class Registry:
                 units_category_list[unit.id] = category
 
         self._categories = category_list
+        self._unsupported = check_unsupported(unsupported, keys_unit_list)
         self._units_category_list = units_category_list
         self._keys_unit_list = keys_unit_list
         self._aliases = tuple(keys_unit_list)
@@ -88,6 +93,10 @@ class Registry:
     def find_unit(self, name: str) -> Unit | None:
         """Return the unit matching a name, symbol or alias, or None."""
         return self._keys_unit_list.get(normalize(name))
+
+    def is_unsupported(self, name: str) -> bool:
+        """Tell whether a name is recognized but deliberately not supported."""
+        return normalize(name) in self._unsupported
 
 
 def check_base_unit(category: Category) -> None:
@@ -139,3 +148,22 @@ def keys_of(unit: Unit) -> list[str]:
         keys.append(key)
 
     return keys
+
+
+def check_unsupported(
+    names: Iterable[str], keys_unit_list: dict[str, Unit]
+) -> set[str]:
+    keys: set[str] = set()  # To keep track of unique unsupported names.
+    for name in names:
+        # Check the name is not a supported unit.
+        key = normalize(name)
+        if key == "":
+            raise RegistryError(f"unsupported name '{name}' is empty.")
+        owner = keys_unit_list.get(key)
+        if owner is not None:
+            raise RegistryError(
+                f"unsupported name '{name}' is a supported name of unit '{owner.id}'."
+            )
+        keys.add(key)
+
+    return set(keys)

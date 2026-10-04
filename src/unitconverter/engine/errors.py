@@ -93,3 +93,16 @@ class RegistryError(Exception):
         self.detail = detail
         self.message = f"RegistryError: {detail}"
         super().__init__(self.message)
+
+
+class UnsupportedUnitError(ConverterError):
+    """Raised when a unit name is recognized but deliberately not supported.
+
+    Used for units without a single worldwide definition (for example the
+    gallon, whose size differs between countries). ``name`` is the text the
+    user typed.
+    """
+
+    def __init__(self, name: str) -> None:
+        self.name = name
+        super().__init__(f"UnsupportedUnitError: '{name}' is not supported.")

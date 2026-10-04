@@ -8,11 +8,11 @@ import re
 
 import pytest
 
-from unitconverter.data import CATEGORIES
+from unitconverter.data import CATEGORIES, UNSUPPORTED
 from unitconverter.engine.models import Category, Unit
 from unitconverter.engine.registry import Registry
 
-REGISTRY = Registry(CATEGORIES)
+REGISTRY = Registry(CATEGORIES, UNSUPPORTED)
 
 
 def get_unit(name: str) -> Unit:
@@ -301,7 +301,7 @@ def test_related_units_match_their_known_ratio(
     assert count * to_base(1, smaller) == pytest.approx(to_base(1, bigger), rel=1e-12)
 
 
-# --- Units that must NOT exist (D19) --------------------------------------
+# --- Units that must NOT exist --------------------------------------------
 
 
 @pytest.mark.parametrize(
@@ -322,3 +322,62 @@ def test_related_units_match_their_known_ratio(
 )
 def test_regionally_ambiguous_or_variable_units_are_absent(name: str) -> None:
     assert REGISTRY.find_unit(name) is None
+
+
+# --- Unsupported names ----------------------------------------------------
+
+
+EXPECTED_UNSUPPORTED = (
+    "gallon",
+    "gallons",
+    "gal",
+    "pint",
+    "pints",
+    "ton",
+    "tons",
+    "fluid ounce",
+    "fluid ounces",
+    "fl oz",
+    "cup",
+    "cups",
+    "tablespoon",
+    "tablespoons",
+    "tbsp",
+    "teaspoon",
+    "teaspoons",
+    "tsp",
+    "month",
+    "months",
+    "year",
+    "years",
+)
+
+
+def test_unsupported_names_are_exactly_the_expected_ones() -> None:
+    assert set(UNSUPPORTED) == set(EXPECTED_UNSUPPORTED)
+
+
+def test_unsupported_names_have_no_repeats() -> None:
+    assert len(set(UNSUPPORTED)) == len(UNSUPPORTED)
+
+
+@pytest.mark.parametrize("name", EXPECTED_UNSUPPORTED)
+def test_expected_names_are_reported_as_unsupported(name: str) -> None:
+    assert REGISTRY.is_unsupported(name)
+    assert REGISTRY.find_unit(name) is None
+
+
+@pytest.mark.parametrize("name", ["Gallons", "  FL   OZ ", "TBSP"])
+def test_unsupported_lookup_ignores_case_and_spacing(name: str) -> None:
+    assert REGISTRY.is_unsupported(name)
+
+
+@pytest.mark.parametrize("name", ["tonne", "tonnes", "metric ton", "kilogram", "t"])
+def test_supported_look_alikes_are_not_unsupported(name: str) -> None:
+    # "ton" is unsupported but "tonne" and the metric ton are fine.
+    assert not REGISTRY.is_unsupported(name)
+    assert REGISTRY.find_unit(name) is not None
+
+
+def test_unsupported_names_are_plain_ascii() -> None:
+    assert all(name.isascii() for name in UNSUPPORTED)
