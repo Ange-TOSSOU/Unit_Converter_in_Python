@@ -20,10 +20,10 @@ _USAGE = f"%(prog)s -v VALUE --from UNIT --to UNIT\n{_MARGIN}%(prog)s [-h | -l]"
 _PROG_NAME = "unit-shift"
 _EXAMPLES = f"""\
 examples:
-  {_PROG_NAME} -v 10 km miles
-  {_PROG_NAME} --value 100 celsius fahrenheit
-  {_PROG_NAME} -v 5 "nautical mile" km
-  {_PROG_NAME} -v=-1e3 m km
+  {_PROG_NAME} -v 10 --from km --to miles
+  {_PROG_NAME} --value 100 --from celsius --to fahrenheit
+  {_PROG_NAME} -v 5 --from "nautical mile" --to km
+  {_PROG_NAME} -v=-1e3 --from m --to km
 
 Unit names ignore case and accept symbols, plurals and British spellings.
 Put names with spaces in quotes. And use the equality when dealing with

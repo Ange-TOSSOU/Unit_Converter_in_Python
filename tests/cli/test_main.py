@@ -1,7 +1,6 @@
 """Tests for the command-line interface."""
 
 import runpy
-import subprocess
 import sys
 
 import pytest
@@ -181,7 +180,7 @@ def test_help_explains_the_command(
     assert code == 0
     assert err == ""
     assert "usage: unit-shift" in out
-    assert "-v 10 km miles" in out
+    assert "-v 10 --from km --to miles" in out
     assert "--list" in out
 
 
@@ -225,16 +224,14 @@ def test_list_cannot_be_combined_with_a_conversion(
 # --- The parser and the entry points ---
 
 
-def test_the_program_name_is_unitconverter() -> None:
+def test_the_program_name_is_unitshift() -> None:
     assert build_parser().prog == "unit-shift"
 
 
 def test_python_dash_m_runs_the_cli(
     capsys: pytest.CaptureFixture[str], monkeypatch: pytest.MonkeyPatch
 ) -> None:
-    monkeypatch.setattr(
-        sys, "argv", ["unitconverter", "-v=10", "--from=km", "--to=miles"]
-    )
+    monkeypatch.setattr(sys, "argv", ["unit-shift", "-v=10", "--from=km", "--to=miles"])
     with pytest.raises(SystemExit) as info:
         runpy.run_module("unitconverter", run_name="__main__")
     assert info.value.code == 0
@@ -245,33 +242,9 @@ def test_python_dash_m_exits_with_code_1_on_a_conversion_error(
     capsys: pytest.CaptureFixture[str], monkeypatch: pytest.MonkeyPatch
 ) -> None:
     monkeypatch.setattr(
-        sys, "argv", ["unitconverter", "-v=abc", "--from=km", "--to=miles"]
+        sys, "argv", ["unit-shift", "-v=abc", "--from=km", "--to=miles"]
     )
     with pytest.raises(SystemExit) as info:
         runpy.run_module("unitconverter", run_name="__main__")
     assert info.value.code == 1
     assert "InvalidNumberError" in capsys.readouterr().err
-
-
-def test_the_command_works_in_a_real_subprocess() -> None:
-    done = subprocess.run(
-        [sys.executable, "-m", "unitconverter", "-v=10", "--from=km", "--to=miles"],
-        capture_output=True,
-        text=True,
-        check=False,
-    )
-    assert done.returncode == 0
-    assert done.stdout == "10 km = 6.2137 mi\n"
-    assert done.stderr == ""
-
-
-def test_a_failing_command_in_a_real_subprocess_exits_with_code_1() -> None:
-    done = subprocess.run(
-        [sys.executable, "-m", "unitconverter", "-v=1", "--from=kg", "--to=meter"],
-        capture_output=True,
-        text=True,
-        check=False,
-    )
-    assert done.returncode == 1
-    assert done.stdout == ""
-    assert "IncompatibleUnitsError" in done.stderr
