@@ -37,9 +37,8 @@ dev = [
     "mypy>=1.11",
 ]
 
-# Uncomment in Step 6, once the CLI module exists:
-# [project.scripts] 
-# unitconverter = "unitconverter.cli:main"
+[project.scripts] 
+unitconverter = "unitconverter.cli.main:main"
 # [project.gui-scripts] # Windows 
 # unitconverter = "unitconverter.cli:main"
 
