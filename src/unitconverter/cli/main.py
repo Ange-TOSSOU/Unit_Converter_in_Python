@@ -108,7 +108,11 @@ def _format_unit_list() -> str:
     lines: list[str] = []
     for category, names in api.list_units().items():
         # Non-breaking spaces keep names like "nautical mile" on one line.
-        text = ", ".join(name.replace(" ", "\u00a0") for name in names)
+        text = ", ".join(
+            f"{name} ({key})".replace(" ", "\u00a0")
+            for name_key in names
+            for name, key in name_key.items()
+        )
         wrapped = textwrap.fill(
             text,
             width=_LIST_WIDTH,

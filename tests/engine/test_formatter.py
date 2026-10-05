@@ -7,7 +7,7 @@ import pytest
 from unitconverter.engine.formatter import format_number, format_quantity
 from unitconverter.engine.models import Quantity, Unit
 
-# --- Zero and ordinary values ---------------------------------------------
+# --- Zero and ordinary values ---
 
 
 @pytest.mark.parametrize("x", [0, 0.0, -0.0])
@@ -56,7 +56,7 @@ def test_negative_values_keep_their_sign(x: float, expected: str) -> None:
     assert format_number(x) == expected
 
 
-# --- Small values: at least 4 significant digits ---------------------------
+# --- Small values: at least 4 significant digits ---
 
 
 @pytest.mark.parametrize(
@@ -74,7 +74,7 @@ def test_small_values_keep_four_significant_digits(x: float, expected: str) -> N
     assert format_number(x) == expected
 
 
-# --- Scientific notation --------------------------------------------------
+# --- Scientific notation ---
 
 
 @pytest.mark.parametrize(
@@ -101,7 +101,7 @@ def test_scientific_notation_has_no_plus_sign_or_padding() -> None:
         assert "e-0" not in text
 
 
-# --- Thresholds -----------------------------------------------------------
+# --- Thresholds ---
 
 
 def test_the_upper_threshold_is_one_million() -> None:
@@ -128,7 +128,7 @@ def test_just_below_the_lower_threshold_can_round_up_to_it() -> None:
     assert format_number(0.000099999) == "1e-4"
 
 
-# --- Properties -----------------------------------------------------------
+# --- Properties ---
 
 
 @pytest.mark.parametrize(
@@ -153,7 +153,7 @@ def test_scientific_output_reads_back_close_to_the_input(x: float) -> None:
     assert float(format_number(x)) == pytest.approx(x, rel=1e-3)
 
 
-# --- Non-finite values ----------------------------------------------------
+# --- Non-finite values ---
 
 
 def test_infinities_are_shown_as_such() -> None:
@@ -165,7 +165,7 @@ def test_nan_is_shown_as_nan() -> None:
     assert format_number(math.nan) == "nan"
 
 
-# --- format_quantity ------------------------------------------------------
+# --- format_quantity ---
 
 
 def make_unit(symbol: str) -> Unit:

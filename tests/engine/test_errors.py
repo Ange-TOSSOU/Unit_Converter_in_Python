@@ -11,7 +11,7 @@ from unitconverter.engine.errors import (
     UnsupportedUnitError,
 )
 
-# --- ConverterError -------------------------------------------------------
+# --- ConverterError ---
 
 
 def test_converter_error_is_an_exception() -> None:
@@ -33,7 +33,7 @@ def test_converter_error_str_matches_message() -> None:
     assert str(error) == "something went wrong"
 
 
-# --- InvalidNumberError ---------------------------------------------------
+# --- InvalidNumberError ---
 
 
 def test_invalid_number_error_keeps_value() -> None:
@@ -63,7 +63,7 @@ def test_invalid_number_error_is_caught_as_converter_error() -> None:
         raise InvalidNumberError("abc")
 
 
-# --- UnknownUnitError -----------------------------------------------------
+# --- UnknownUnitError ---
 
 
 def test_unknown_unit_error_keeps_name() -> None:
@@ -121,7 +121,7 @@ def test_unknown_unit_error_is_caught_as_converter_error() -> None:
         raise UnknownUnitError("blorp")
 
 
-# --- IncompatibleUnitsError -----------------------------------------------
+# --- IncompatibleUnitsError ---
 
 
 def test_incompatible_units_error_keeps_categories() -> None:
@@ -153,7 +153,7 @@ def test_incompatible_units_error_is_caught_as_converter_error() -> None:
         raise IncompatibleUnitsError("mass", "length")
 
 
-# --- Shared behaviour -----------------------------------------------------
+# --- Shared behaviour ---
 
 ALL_ERRORS: list[ConverterError] = [
     ConverterError("base"),
@@ -180,7 +180,7 @@ def test_every_error_message_is_not_empty(error: ConverterError) -> None:
     assert error.message.strip() != ""
 
 
-# --- RegistryError --------------------------------------------------------
+# --- RegistryError ---
 
 
 def test_registry_error_is_an_exception() -> None:
@@ -206,7 +206,7 @@ def test_registry_error_str_matches_message() -> None:
 
 
 def test_registry_error_is_not_a_converter_error() -> None:
-    # Protects D45: a data bug must not be hidden behind the friendly,
+    # A data bug must not be hidden behind the friendly,
     # user-facing ConverterError family.
     assert not issubclass(RegistryError, ConverterError)
 
@@ -222,7 +222,7 @@ def test_registry_error_is_not_caught_by_converter_error_handlers() -> None:
     assert not caught_as_converter_error
 
 
-# --- UnsupportedUnitError -------------------------------------------------
+# --- UnsupportedUnitError ---
 
 
 def test_unsupported_unit_error_keeps_name() -> None:

@@ -266,7 +266,7 @@ def test_reference_factors_and_offsets(factor: float, name: str, offset: float) 
     assert unit.factor == factor and unit.offset == offset
 
 
-# --- Units that must NOT exist --------------------------------------------
+# --- Units that must NOT exist ---
 
 
 @pytest.mark.parametrize(
@@ -289,7 +289,7 @@ def test_regionally_ambiguous_or_variable_units_are_absent(name: str) -> None:
     assert REGISTRY.find_unit(name) is None
 
 
-# --- Unsupported names ----------------------------------------------------
+# --- Unsupported names ---
 
 
 EXPECTED_UNSUPPORTED = (

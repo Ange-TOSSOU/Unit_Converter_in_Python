@@ -4,7 +4,7 @@ import pytest
 
 from unitconverter.utils.normalize import normalize
 
-# --- Case -----------------------------------------------------------------
+# --- Case ---
 
 
 @pytest.mark.parametrize("name", ["celsius", "Celsius", "CELSIUS", "cElSiUs"])
@@ -17,7 +17,7 @@ def test_casefold_handles_non_english_letters() -> None:
     assert normalize("Straße") == normalize("STRASSE")
 
 
-# --- Whitespace -----------------------------------------------------------
+# --- Whitespace ---
 
 
 def test_leading_and_trailing_whitespace_is_removed() -> None:
@@ -37,7 +37,7 @@ def test_non_breaking_space_counts_as_whitespace() -> None:
     assert normalize("nautical\u00a0 mile") == "nautical mile"
 
 
-# --- Empty input ----------------------------------------------------------
+# --- Empty input ---
 
 
 @pytest.mark.parametrize("name", ["", " ", "   ", "\t\n"])
@@ -45,7 +45,7 @@ def test_empty_and_whitespace_only_input_returns_empty_string(name: str) -> None
     assert normalize(name) == ""
 
 
-# --- What normalize must not do -------------------------------------------
+# --- What normalize must not do ---
 
 
 @pytest.mark.parametrize("name", ["feet", "inches", "metres", "kilometers"])
@@ -57,7 +57,7 @@ def test_spelling_is_not_corrected() -> None:
     assert normalize("Kilometre") == "kilometre"
 
 
-# --- Properties -----------------------------------------------------------
+# --- Properties ---
 
 
 @pytest.mark.parametrize(

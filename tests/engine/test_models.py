@@ -24,7 +24,7 @@ def make_kilometer() -> Unit:
     )
 
 
-# --- Unit -----------------------------------------------------------------
+# --- Unit ---
 
 
 def test_unit_holds_the_fields_it_was_given() -> None:
@@ -68,7 +68,7 @@ def test_unit_requires_its_mandatory_fields() -> None:
         Unit(id="meter", name="meter")  # type: ignore[call-arg]
 
 
-# --- Category -------------------------------------------------------------
+# --- Category ---
 
 
 def test_category_holds_the_fields_it_was_given() -> None:
@@ -95,7 +95,7 @@ def test_category_requires_arguments() -> None:
         Category("length", "meter")  # type: ignore[call-arg]
 
 
-# --- Quantity -------------------------------------------------------------
+# --- Quantity ---
 
 
 def test_quantity_holds_its_value_and_unit() -> None:

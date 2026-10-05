@@ -140,14 +140,21 @@ def test_list_units_returns_the_five_categories() -> None:
 
 def test_list_units_returns_readable_unit_names() -> None:
     units = api.list_units()
-    assert "kilometer" in units["length"]
-    assert "nautical mile" in units["length"]
-    assert units["temperature"] == ("kelvin", "celsius", "fahrenheit")
+    assert {"kilometer": "km"} in units["length"]
+    assert {"nautical mile": "nmi"} in units["length"]
+    assert units["temperature"] == (
+        {"kelvin": "K"},
+        {"celsius": "C"},
+        {"fahrenheit": "F"},
+    )
 
 
 def test_every_listed_unit_name_can_be_converted_from() -> None:
     for names in api.list_units().values():
-        for name in names:
+        for name_key in names:
+            keys = [n for n in name_key]
+            assert len(keys) == 1
+            name = keys[0]
             assert api.convert("1", name, name).value == 1
 
 

@@ -284,7 +284,7 @@ def test_converting_to_the_same_unit_returns_the_exact_value() -> None:
     assert converted(123.456, "mile", "mile") == 123.456
 
 
-# --- Edge cases -----------------------------------------------------------
+# --- Edge cases ---
 
 
 def test_zero_converts_to_zero_for_linear_units() -> None:
@@ -313,7 +313,7 @@ def test_absolute_zero_is_the_same_in_every_scale() -> None:
     assert converted(-273.15, "celsius", "kelvin") == pytest.approx(0, abs=1e-9)
 
 
-# --- Errors ---------------------------------------------------------------
+# --- Errors ---
 
 
 def test_units_of_different_categories_are_rejected() -> None:

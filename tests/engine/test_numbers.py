@@ -5,7 +5,7 @@ import pytest
 from unitconverter.engine.errors import ConverterError, InvalidNumberError
 from unitconverter.engine.numbers import parse_number
 
-# --- Valid input ----------------------------------------------------------
+# --- Valid input ---
 
 
 @pytest.mark.parametrize(
@@ -37,7 +37,7 @@ def test_result_is_always_a_float(value: str | float) -> None:
     assert isinstance(parse_number(value), float)
 
 
-# --- Invalid input --------------------------------------------------------
+# --- Invalid input ---
 
 
 @pytest.mark.parametrize(
@@ -79,7 +79,7 @@ def test_other_types_are_rejected(value: object) -> None:
         parse_number(value)
 
 
-# --- The error ------------------------------------------------------------
+# --- The error ---
 
 
 @pytest.mark.parametrize("value", ["abc", "", "1,5", None, True])

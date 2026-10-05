@@ -73,9 +73,9 @@ def convert_and_format(value: object, from_unit: str, to_unit: str) -> str:
 
 
 # For GUI purpose.
-def list_units() -> dict[str, tuple[str, ...]]:
+def list_units() -> dict[str, tuple[dict[str, str], ...]]:
     """Return the unit names of each category, for interface selectors."""
     return {
-        category.name: tuple(unit.name for unit in category.units)
+        category.name: tuple({unit.name: unit.symbol} for unit in category.units)
         for category in get_registry().categories
     }

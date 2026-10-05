@@ -7,7 +7,7 @@ from unitconverter.engine.models import Category, Unit
 from unitconverter.engine.registry import Registry
 from unitconverter.utils.normalize import normalize
 
-# --- Helpers --------------------------------------------------------------
+# --- Helpers ---
 
 
 def make_unit(
@@ -63,7 +63,7 @@ def make_registry() -> Registry:
     return Registry([LENGTH, TEMPERATURE])
 
 
-# --- Lookups: happy path --------------------------------------------------
+# --- Lookups: happy path ---
 
 
 def test_find_unit_by_name() -> None:
@@ -150,7 +150,7 @@ def test_unit_with_an_offset_loads() -> None:
     assert make_registry().find_unit("celsius") is CELSIUS
 
 
-# --- Lookups: misses ------------------------------------------------------
+# --- Lookups: misses ---
 
 
 @pytest.mark.parametrize("name", ["blorp", "gallon", "", "   "])
@@ -158,7 +158,7 @@ def test_find_unit_returns_none_for_unknown_names(name: str) -> None:
     assert make_registry().find_unit(name) is None
 
 
-# --- Repeated names inside one unit ---------------------------------------
+# --- Repeated names inside one unit ---
 
 
 def test_repeating_a_name_inside_one_unit_is_ignored() -> None:
@@ -168,7 +168,7 @@ def test_repeating_a_name_inside_one_unit_is_ignored() -> None:
     assert registry.find_unit("A") is unit
 
 
-# --- Validation: categories -----------------------------------------------
+# --- Validation: categories ---
 
 
 def test_duplicate_category_name_is_rejected() -> None:
@@ -220,7 +220,7 @@ def test_base_unit_with_an_offset_is_rejected() -> None:
         Registry([category])
 
 
-# --- Validation: units ----------------------------------------------------
+# --- Validation: units ---
 
 
 def test_duplicate_unit_id_in_one_category_is_rejected() -> None:
@@ -280,7 +280,7 @@ def test_invalid_offset_is_rejected(offset: float) -> None:
         Registry([category])
 
 
-# --- Validation: names, symbols and aliases -------------------------------
+# --- Validation: names, symbols and aliases ---
 
 
 def test_empty_name_is_rejected() -> None:
@@ -358,7 +358,7 @@ def test_symbols_differing_only_by_case_are_rejected() -> None:
         Registry([make_category(first, second, base_id="m1")])
 
 
-# --- Unsupported names ----------------------------------------------------
+# --- Unsupported names ---
 
 
 UNSUPPORTED = ("gallon", "Pint", "fl oz")

@@ -17,7 +17,7 @@ def make_registry(*units: Unit, base_id: str) -> Registry:
     return Registry([category])
 
 
-# --- Names that resolve ---------------------------------------------------
+# --- Names that resolve ---
 
 
 @pytest.mark.parametrize(
@@ -39,7 +39,7 @@ def test_resolve_returns_the_registry_unit() -> None:
     assert resolve("miles", REGISTRY) is REGISTRY.find_unit("miles")
 
 
-# --- Unsupported names ----------------------------------------------------
+# --- Unsupported names ---
 
 
 @pytest.mark.parametrize("name", ["gallon", "Gallons", "  PINT ", "fl oz", "year"])
@@ -49,7 +49,7 @@ def test_resolve_rejects_unsupported_names(name: str) -> None:
     assert info.value.name == name
 
 
-# --- Unknown names --------------------------------------------------------
+# --- Unknown names ---
 
 
 def test_resolve_rejects_unknown_names_and_keeps_the_text() -> None:
@@ -72,7 +72,7 @@ def test_unknown_unit_error_carries_the_suggestions() -> None:
     assert "kilometer" in info.value.suggestions
 
 
-# --- Suggestions ----------------------------------------------------------
+# --- Suggestions ---
 
 # (typo, the unit that should be suggested first)
 TYPOS = [
