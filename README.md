@@ -222,10 +222,10 @@ python -m unitconverter -v 10 --from km --to miles
 ```python
 from unitconverter import api
 
-print(api.convert_and_format("10", "km", "miles"))   # 6.2137 mi
+print(api.convert_and_format("10", "km", "miles"))  # 6.2137 mi
 
 result = api.convert("10", "km", "miles")
-print(result.value, result.unit.symbol)              # 6.2137119... mi
+print(result.value, result.unit.symbol)  # 6.2137119... mi
 ```
 
 Errors are raised as subclasses of `api.ConverterError`. The API is small and may change before version 1.0.
