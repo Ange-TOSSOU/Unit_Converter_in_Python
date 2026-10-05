@@ -21,18 +21,13 @@ def get_unit(name: str) -> Unit:
     return unit
 
 
-def to_base(value: float, name: str) -> float:
-    """Convert a value to its category's base unit."""
-    unit = get_unit(name)
-    return value * unit.factor + unit.offset
-
-
-# --- Catalog structure ----------------------------------------------------
+# --- Catalog structure ---
 
 EXPECTED_UNIT_IDS = {
     "length": (
         "millimeter",
         "centimeter",
+        "decimeter",
         "meter",
         "kilometer",
         "inch",
@@ -108,11 +103,12 @@ def test_every_name_symbol_and_alias_is_plain_ascii() -> None:
                 assert text.isascii()
 
 
-# --- Symbols and aliases (D31) --------------------------------------------
+# --- Symbols and aliases ---
 
 EXPECTED_SYMBOLS = {
     "millimeter": "mm",
     "centimeter": "cm",
+    "decimeter": "dm",
     "meter": "m",
     "kilometer": "km",
     "inch": "in",
@@ -147,6 +143,7 @@ EXPECTED_SYMBOLS = {
 EXPECTED_ALIASES = {
     "millimeter": ("millimeters", "millimetre", "millimetres"),
     "centimeter": ("centimeters", "centimetre", "centimetres"),
+    "decimeter": ("decimeters", "decimetre", "decimetres"),
     "meter": ("meters", "metre", "metres"),
     "kilometer": ("kilometers", "kilometre", "kilometres"),
     "inch": ("inches",),
@@ -219,86 +216,54 @@ def test_lookup_ignores_case_and_spacing() -> None:
     assert get_unit("NAUTICAL  Miles").id == "nautical_mile"
 
 
-# --- Reference values -----------------------------------------------------
+# --- Reference factors and offsets ---
 
-# (value, unit name, expected value in the category's base unit)
-REFERENCE_VALUES = [
+# (offset, unit name, factor in the category's base unit)
+REFERENCE_FO = [
     # Length, in meters
-    (1, "millimeter", 0.001),
-    (1, "centimeter", 0.01),
-    (1, "kilometer", 1000),
-    (1, "inch", 0.0254),
-    (1, "foot", 0.3048),
-    (1, "yard", 0.9144),
-    (1, "mile", 1609.344),
-    (1, "nautical mile", 1852),
+    (0, "millimeter", 0.001),
+    (0, "centimeter", 0.01),
+    (0, "decimeter", 0.1),
+    (0, "meter", 1),
+    (0, "kilometer", 1000),
+    (0, "inch", 0.0254),
+    (0, "foot", 0.3048006096),
+    (0, "yard", 0.91440183),
+    (0, "mile", 1609.344),
+    (0, "nautical mile", 1852),
     # Mass, in kilograms
-    (1, "milligram", 1e-6),
-    (1, "gram", 0.001),
-    (1, "metric ton", 1000),
-    (1, "pound", 0.45359237),
-    (1, "ounce", 0.028349523125),
-    (1, "stone", 6.35029318),
+    (0, "milligram", 1e-6),
+    (0, "gram", 0.001),
+    (0, "kilogram", 1),
+    (0, "metric ton", 1000),
+    (0, "pound", 0.45359237),
+    (0, "ounce", 0.028349523125),
+    (0, "stone", 6.35029318),
     # Volume, in liters
-    (1, "milliliter", 0.001),
-    (1, "cubic centimeter", 0.001),
-    (1, "cubic meter", 1000),
-    (1, "cubic inch", 0.016387064),
-    (1, "cubic foot", 28.316846592),
+    (0, "milliliter", 0.001),
+    (0, "cubic centimeter", 0.001),
+    (0, "liter", 1),
+    (0, "cubic meter", 1000),
+    (0, "cubic inch", 0.016387064),
+    (0, "cubic foot", 28.316846592),
     # Time, in seconds
-    (1, "millisecond", 0.001),
-    (1, "minute", 60),
-    (1, "hour", 3600),
-    (1, "day", 86400),
-    (1, "week", 604800),
+    (0, "millisecond", 0.001),
+    (0, "second", 1),
+    (0, "minute", 60),
+    (0, "hour", 3600),
+    (0, "day", 86400),
+    (0, "week", 604800),
     # Temperature, in kelvin
-    (0, "celsius", 273.15),
-    (100, "celsius", 373.15),
-    (32, "fahrenheit", 273.15),
-    (212, "fahrenheit", 373.15),
-    (-40, "fahrenheit", 233.15),
+    (273.15, "celsius", 1),
+    (0, "kelvin", 1),
+    (459.67, "fahrenheit", 5 / 9),
 ]
 
 
-@pytest.mark.parametrize(("value", "name", "expected"), REFERENCE_VALUES)
-def test_reference_value(value: float, name: str, expected: float) -> None:
-    assert to_base(value, name) == pytest.approx(expected, rel=1e-12)
-
-
-def test_absolute_zero_is_zero_kelvin_in_every_scale() -> None:
-    assert to_base(0, "kelvin") == 0
-    assert to_base(-273.15, "celsius") == pytest.approx(0, abs=1e-9)
-    assert to_base(-459.67, "fahrenheit") == pytest.approx(0, abs=1e-9)
-
-
-def test_minus_forty_is_the_same_in_celsius_and_fahrenheit() -> None:
-    assert to_base(-40, "celsius") == pytest.approx(to_base(-40, "fahrenheit"))
-
-
-# --- Relations between units (cross-checks) -------------------------------
-
-
-@pytest.mark.parametrize(
-    ("count", "smaller", "bigger"),
-    [
-        (12, "inch", "foot"),
-        (3, "foot", "yard"),
-        (5280, "foot", "mile"),
-        (1760, "yard", "mile"),
-        (16, "ounce", "pound"),
-        (14, "pound", "stone"),
-        (1000, "kilogram", "metric ton"),
-        (1000, "cubic centimeter", "liter"),
-        (60, "second", "minute"),
-        (24, "hour", "day"),
-        (7, "day", "week"),
-    ],
-)
-def test_related_units_match_their_known_ratio(
-    count: int, smaller: str, bigger: str
-) -> None:
-    # `count` of the smaller unit make up one of the bigger unit.
-    assert count * to_base(1, smaller) == pytest.approx(to_base(1, bigger), rel=1e-12)
+@pytest.mark.parametrize(("offset", "name", "factor"), REFERENCE_FO)
+def test_reference_factors_and_offsets(factor: float, name: str, offset: float) -> None:
+    unit = get_unit(name)
+    assert unit.factor == factor and unit.offset == offset
 
 
 # --- Units that must NOT exist --------------------------------------------

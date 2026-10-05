@@ -7,7 +7,7 @@ derived (1/16 and 14 pounds). The ounce is the avoirdupois ounce.
 
 from unitconverter.engine.models import Category, Unit
 
-POUND_IN_KG = 0.45359237
+_POUND_IN_KG = 0.45359237
 
 MASS = Category(
     name="mass",
@@ -45,21 +45,21 @@ MASS = Category(
             id="ounce",
             name="ounce",
             symbol="oz",
-            factor=POUND_IN_KG / 16,
+            factor=_POUND_IN_KG / 16,
             aliases=("ounces",),
         ),
         Unit(
             id="pound",
             name="pound",
             symbol="lb",
-            factor=POUND_IN_KG,
+            factor=_POUND_IN_KG,
             aliases=("pounds", "lbs"),
         ),
         Unit(
             id="stone",
             name="stone",
             symbol="st",
-            factor=POUND_IN_KG * 14,
+            factor=_POUND_IN_KG * 14,
             aliases=("stones",),
         ),
     ),

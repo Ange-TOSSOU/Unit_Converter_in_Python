@@ -26,6 +26,13 @@ LENGTH = Category(
             aliases=("centimeters", "centimetre", "centimetres"),
         ),
         Unit(
+            id="decimeter",
+            name="decimeter",
+            symbol="dm",
+            factor=0.1,
+            aliases=("decimeters", "decimetre", "decimetres"),
+        ),
+        Unit(
             id="meter",
             name="meter",
             symbol="m",
@@ -50,14 +57,14 @@ LENGTH = Category(
             id="foot",
             name="foot",
             symbol="ft",
-            factor=0.3048,
+            factor=0.3048006096,
             aliases=("feet",),
         ),
         Unit(
             id="yard",
             name="yard",
             symbol="yd",
-            factor=0.9144,
+            factor=0.91440183,
             aliases=("yards",),
         ),
         Unit(

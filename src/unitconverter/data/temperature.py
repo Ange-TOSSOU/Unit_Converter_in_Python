@@ -35,7 +35,7 @@ TEMPERATURE = Category(
             name="fahrenheit",
             symbol="F",
             factor=5 / 9,
-            offset=459.67 * 5 / 9,
+            offset=459.67,
             aliases=("degree fahrenheit", "degrees fahrenheit"),
         ),
     ),
