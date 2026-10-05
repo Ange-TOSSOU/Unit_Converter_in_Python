@@ -4,7 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "unit-shift"
-version = "0.1.2"
+version = "0.1.1"
+keywords = ["unit", "units", "converter", "conversion", "cli"]
 dependencies = [
     "requests"
 ]
@@ -26,6 +27,7 @@ license = "MIT"
 license-files = ["LICENSE"]
 
 [project.urls]
+Homepage = "https://github.com/Ange-TOSSOU/Unit_Converter_in_Python"
 Changelog = "https://github.com/Ange-TOSSOU/Unit_Converter_in_Python/blob/main/CHANGELOG.md"
 Repository = "https://github.com/Ange-TOSSOU/Unit_Converter_in_Python"
 
