@@ -180,7 +180,7 @@ def test_help_explains_the_command(
     code, out, err = run_expecting_exit(capsys, [option])
     assert code == 0
     assert err == ""
-    assert "usage: unitconverter" in out
+    assert "usage: unit-shift" in out
     assert "-v 10 km miles" in out
     assert "--list" in out
 
@@ -226,7 +226,7 @@ def test_list_cannot_be_combined_with_a_conversion(
 
 
 def test_the_program_name_is_unitconverter() -> None:
-    assert build_parser().prog == "unitconverter"
+    assert build_parser().prog == "unit-shift"
 
 
 def test_python_dash_m_runs_the_cli(

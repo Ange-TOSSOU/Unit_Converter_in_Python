@@ -17,7 +17,7 @@ from unitconverter import api
 _MARGIN = " " * 7
 _USAGE = f"%(prog)s -v VALUE --from UNIT --to UNIT\n{_MARGIN}%(prog)s [-h | -l]"
 
-_PROG_NAME = "unitconverter"
+_PROG_NAME = "unit-shift"
 _EXAMPLES = f"""\
 examples:
   {_PROG_NAME} -v 10 km miles
