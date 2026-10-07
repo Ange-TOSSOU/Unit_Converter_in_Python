@@ -5,7 +5,7 @@
 A Python tool that converts values between units of measurement. Use it from the command line, or import it from your own Python code.
 
 ```
-$ convert -v 10 --from km --to miles
+$ unit-shift -v 10 --from km --to miles
 10 km = 6.2137 mi
 ```
 
