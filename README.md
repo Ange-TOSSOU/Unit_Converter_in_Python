@@ -1,6 +1,6 @@
 # Unit Converter
 
-![CI](https://github.com/Ange-TOSSOU/Unit_Converter_in_Python/actions/workflows/ci.yml)
+[![CI](https://github.com/Ange-TOSSOU/Unit_Converter_in_Python/actions/workflows/ci.yml/badge.svg)](https://github.com/Ange-TOSSOU/Unit_Converter_in_Python/actions/workflows/ci.yml)
 
 A Python tool that converts values between units of measurement. Use it from the command line, or import it from your own Python code.
 
