@@ -26,7 +26,7 @@ examples:
   {_PROG_NAME} -v=-1e3 --from m --to km
 
 Unit names ignore case and accept symbols, plurals and British spellings.
-Put names with spaces in quotes. And use the equality when dealing with
+Put names with spaces in quotes. And use the equality sign when dealing with
 negative numbers.
 """
 

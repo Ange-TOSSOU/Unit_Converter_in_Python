@@ -49,11 +49,11 @@ class UnknownUnitError(ConverterError):
         message = "UnknownUnitError"
 
         # If possible, specify which unit is not recognized and give suggestions.
-        if name is not None:
-            message += f": unknown unit '{name}'."
+        if self.name is not None:
+            message += f": unknown unit '{self.name}'."
 
             # Add suggestions if provided.
-            if suggestions is not None:
+            if self.suggestions:
                 options = ", ".join(
                     f"'{suggestion}'" for suggestion in self.suggestions
                 )

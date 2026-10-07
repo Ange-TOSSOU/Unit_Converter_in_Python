@@ -91,6 +91,11 @@ def test_unknown_unit_error_without_suggestions_has_no_hint() -> None:
     assert error.message == "UnknownUnitError: unknown unit 'blorp'."
 
 
+def test_unknown_unit_error_without_empty_suggestions_has_no_hint() -> None:
+    error = UnknownUnitError("blorp", [])
+    assert error.message == "UnknownUnitError: unknown unit 'blorp'."
+
+
 def test_unknown_unit_error_with_one_suggestion() -> None:
     error = UnknownUnitError("kilometre", ["kilometer"])
     assert (
