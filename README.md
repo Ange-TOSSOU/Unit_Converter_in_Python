@@ -22,9 +22,9 @@ cd Unit_Converter_in_Python
 pip install .
 ```
 
-### Using TestPyPi repo
+### Using PyPi repo
 ```
-pip install -i https://test.pypi.org/simple/ unit-shift
+pip install unit-shift
 ```
 
 Check that it works:
