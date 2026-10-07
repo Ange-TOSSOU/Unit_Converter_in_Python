@@ -9,6 +9,7 @@ foot follow from the exact inch (0.0254 m) and foot (0.3048 m):
 0.0254 ** 3 m3 = 0.016387064 L and 0.3048 ** 3 m3 = 28.316846592 L.
 """
 
+from unitconverter.data.factors import FACTORS
 from unitconverter.engine.models import Category, Unit
 
 VOLUME = Category(
@@ -19,14 +20,14 @@ VOLUME = Category(
             id="milliliter",
             name="milliliter",
             symbol="ml",
-            factor=0.001,
+            factor=FACTORS["milli"],
             aliases=("milliliters", "millilitre", "millilitres"),
         ),
         Unit(
             id="cubic_centimeter",
             name="cubic centimeter",
             symbol="cm3",
-            factor=0.001,  # 1 cm3 = 1 mL
+            factor=FACTORS["milli"],  # 1 cm3 = 1 mL
             aliases=(
                 "cubic centimeters",
                 "cubic centimetre",
@@ -45,7 +46,7 @@ VOLUME = Category(
             id="cubic_meter",
             name="cubic meter",
             symbol="m3",
-            factor=1000,  # 1 m3 = 1000 L
+            factor=FACTORS["kilo"],  # 1 m3 = 1000 L
             aliases=("cubic meters", "cubic metre", "cubic metres"),
         ),
         Unit(

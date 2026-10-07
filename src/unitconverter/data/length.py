@@ -5,6 +5,7 @@ pound agreement (1959) for inch, foot, yard and mile; the International
 Hydrographic Conference (1929) for the nautical mile.
 """
 
+from unitconverter.data.factors import FACTORS
 from unitconverter.engine.models import Category, Unit
 
 LENGTH = Category(
@@ -15,21 +16,21 @@ LENGTH = Category(
             id="millimeter",
             name="millimeter",
             symbol="mm",
-            factor=0.001,
+            factor=FACTORS["milli"],
             aliases=("millimeters", "millimetre", "millimetres"),
         ),
         Unit(
             id="centimeter",
             name="centimeter",
             symbol="cm",
-            factor=0.01,
+            factor=FACTORS["centi"],
             aliases=("centimeters", "centimetre", "centimetres"),
         ),
         Unit(
             id="decimeter",
             name="decimeter",
             symbol="dm",
-            factor=0.1,
+            factor=FACTORS["deci"],
             aliases=("decimeters", "decimetre", "decimetres"),
         ),
         Unit(
@@ -43,7 +44,7 @@ LENGTH = Category(
             id="kilometer",
             name="kilometer",
             symbol="km",
-            factor=1000,
+            factor=FACTORS["kilo"],
             aliases=("kilometers", "kilometre", "kilometres"),
         ),
         Unit(

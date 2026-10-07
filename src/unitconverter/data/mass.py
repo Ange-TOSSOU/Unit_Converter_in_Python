@@ -5,9 +5,11 @@ pound agreement (1959) for the pound, from which the ounce and the stone are
 derived (1/16 and 14 pounds). The ounce is the avoirdupois ounce.
 """
 
+from unitconverter.data.factors import FACTORS
 from unitconverter.engine.models import Category, Unit
 
 _POUND_IN_KG = 0.45359237
+_SCALE = 1e-3
 
 MASS = Category(
     name="mass",
@@ -17,21 +19,21 @@ MASS = Category(
             id="milligram",
             name="milligram",
             symbol="mg",
-            factor=1e-6,
+            factor=FACTORS["milli"] * _SCALE,
             aliases=("milligrams", "milligramme", "milligrammes"),
         ),
         Unit(
             id="gram",
             name="gram",
             symbol="g",
-            factor=0.001,
+            factor=_SCALE,
             aliases=("grams", "gramme", "grammes"),
         ),
         Unit(
             id="kilogram",
             name="kilogram",
             symbol="kg",
-            factor=1,
+            factor=FACTORS["kilo"] * _SCALE,
             aliases=("kilograms", "kilogramme", "kilogrammes", "kilo", "kilos"),
         ),
         Unit(
