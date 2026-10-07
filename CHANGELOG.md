@@ -9,8 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- Command-line interface: `convert -v VALUE --from UNIT --to UNIT`, also available as `python -m unitconverter`
-- `convert --list` to show every supported unit, and `convert --help` with examples
+- Command-line interface: `unit-shift -v VALUE --from UNIT --to UNIT`, also available as `python -m unitconverter`
+- `unit-shift --list` to show every supported unit, and `unit-shift --help` with examples
 - Output such as `10 km = 6.2137 mi`: results on standard output, errors on standard error, and exit codes 0 (success), 1 (conversion failed) and 2 (wrong usage)
 - Conversion between any two units of the same category, including temperatures
 - Readable output: at least 4 decimals and 4 significant digits, with scientific notation at 1e6 and above or below 1e-4
@@ -25,3 +25,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Development tooling: ruff, mypy (strict) and pytest with a 100% coverage gate
 - Continuous integration with GitHub Actions, on Python 3.10 to 3.13
 - README with a command-line tutorial, and an architecture overview
+
+
+## [0.1.2] - 07-10-2026
+
+### Added
+
+- List of unsupported units extended
+
+### Fix
+
+- *Did you mean ...?* message displayed only if there is any suggestion
