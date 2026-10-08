@@ -386,5 +386,3 @@ def test_additional_conversions(
     assert converted(value, from_id, to_id) == pytest.approx(
         expected, rel=1e-6, abs=1e-9
     )
-
-
