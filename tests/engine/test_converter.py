@@ -348,3 +348,43 @@ def test_a_unit_from_another_registry_is_rejected() -> None:
     stranger = Unit(id="furlong", name="furlong", symbol="fur", factor=201.168)
     with pytest.raises(ConverterError):
         convert(Quantity(1, stranger), unit("meter"), REGISTRY)
+
+
+# --- Additional conversion tests ---
+
+
+@pytest.mark.parametrize(
+    ("value", "from_id", "to_id", "expected"),
+    [
+        # Length
+        (10, "millimeters", "centimeter", 1),
+        (1, "centimeter", "millimeters", 10),
+        (10, "centimeters", "decimeter", 1),
+        (1, "decimeter", "centimeters", 10),
+        (10, "centimeters", "millimeters", 100),
+        (100, "millimeters", "centimeters", 10),
+        (10, "decimeters", "meter", 1),
+        (1, "meter", "decimeters", 10),
+        (10, "decimeters", "millimeters", 1000),
+        (1000, "millimeters", "decimeters", 10),
+        (15, "miles", "yards", 26399.947165),
+        (26399.947165, "yards", "miles", 15),
+        (5, "feet", "meter", 1.524003),
+        (1.524003, "meter", "feet", 5),
+        (4, "inches", "meter", 0.1016),
+        (0.1016, "meter", "inches", 4),
+        (4, "inches", "centimeters", 10.16),
+        (10.16, "centimeters", "inches", 4),
+        # Mass
+        (300, "ounces", "pounds", 18.75),
+        (18.75, "pounds", "ounces", 300),
+    ],
+)
+def test_additional_conversions(
+    value: float, from_id: str, to_id: str, expected: float
+) -> None:
+    assert converted(value, from_id, to_id) == pytest.approx(
+        expected, rel=1e-6, abs=1e-9
+    )
+
+
